@@ -1,0 +1,22 @@
+name: Push
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Push the Docker image
+      run: |
+        docker push thanhnt103/udagram-api-feed:v1
+        docker push thanhnt103/udagram-api-user:v1
+        docker push thanhnt103/udagram-frontend:v1
+        docker push thanhnt103/udagram-reverseproxy:v1

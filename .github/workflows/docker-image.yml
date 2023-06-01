@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to Docker Hub
+name: Build
 
 on:
   push:
@@ -10,8 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build the Docker image
+    - uses: actions/checkout@v3
+    - name: Build & Tag the Docker image
       run: |
         docker build -t udagram-api-feed ./udagram-api-feed
         docker build -t udagram-api-user ./udagram-api-user
@@ -21,22 +21,3 @@ jobs:
         docker tag udagram-api-user thanhnt103/udagram-api-user:v1
         docker tag udagram-frontend thanhnt103/udagram-frontend:v1
         docker tag udagram-reverseproxy thanhnt103/udagram-reverseproxy:v1
-
-  login:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Login the Docker Hub
-      run: |
-        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      
-  push:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Push the Docker image
-      run: |
-        docker push thanhnt103/udagram-api-feed:v1
-        docker push thanhnt103/udagram-api-user:v1
-        docker push thanhnt103/udagram-frontend:v1
-        docker push thanhnt103/udagram-reverseproxy:v1
