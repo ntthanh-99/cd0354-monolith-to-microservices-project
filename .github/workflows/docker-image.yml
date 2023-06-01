@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to Docker Hub
+name: Build
 
 on:
   push:
@@ -13,7 +13,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
-		echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker build -t udagram-api-feed ./udagram-api-feed
         docker build -t udagram-api-user ./udagram-api-user
         docker build -t udagram-frontend ./udagram-frontend
@@ -22,7 +21,3 @@ jobs:
         docker tag udagram-api-user thanhnt103/udagram-api-user:v1
         docker tag udagram-frontend thanhnt103/udagram-frontend:v1
         docker tag udagram-reverseproxy thanhnt103/udagram-reverseproxy:v1
-		docker push thanhnt103/udagram-api-feed:v1
-        docker push thanhnt103/udagram-api-user:v1
-        docker push thanhnt103/udagram-frontend:v1
-        docker push thanhnt103/udagram-reverseproxy:v1
