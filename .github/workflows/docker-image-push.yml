@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Push the Docker image
       run: |
         docker push thanhnt103/udagram-api-feed:v1
         docker push thanhnt103/udagram-api-user:v1
