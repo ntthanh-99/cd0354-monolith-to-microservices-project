@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: env-config
 data:
-  POSTGRES_HOST: postgres.c5onszhzcm4f.us-east-1.rds.amazonaws.com
+  POSTGRES_HOST: postgres.c5cajvuloznx.us-east-1.rds.amazonaws.com
   POSTGRES_DB: postgres
-  AWS_BUCKET: arn:aws:s3:::test-thanhnt-dev
+  AWS_BUCKET: arn:aws:s3:::test-thanhnt103-dev
   AWS_REGION: us-east-1
   AWS_PROFILE: default
   JWT_SECRET: testing
