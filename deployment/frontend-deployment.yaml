@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: docker.io/thanhnt103/udagram-frontend:v6
+          image: docker.io/thanhnt103/udagram-frontend:v7
           ports:
             - containerPort: 80
           resources:
