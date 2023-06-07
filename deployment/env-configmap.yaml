@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: env-config
 data:
-  POSTGRES_HOST: postgres.c5cajvuloznx.us-east-1.rds.amazonaws.com
+  POSTGRES_HOST: postgres.cbh4qvzwq9qy.us-east-1.rds.amazonaws.com
   POSTGRES_DB: postgres
   AWS_BUCKET: arn:aws:s3:::test-thanhnt103-dev
   AWS_REGION: us-east-1

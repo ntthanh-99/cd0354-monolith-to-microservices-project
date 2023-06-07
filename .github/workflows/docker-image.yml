@@ -17,12 +17,12 @@ jobs:
           docker build -t udagram-api-user ./udagram-api-user
           docker build -t udagram-frontend ./udagram-frontend
           docker build -t udagram-reverseproxy ./udagram-reverseproxy
-          docker tag udagram-api-feed thanhnt103/udagram-api-feed:v7
-          docker tag udagram-api-user thanhnt103/udagram-api-user:v7
-          docker tag udagram-frontend thanhnt103/udagram-frontend:v7
-          docker tag udagram-reverseproxy thanhnt103/udagram-reverseproxy:v5
+          docker tag udagram-api-feed thanhnt103/udagram-api-feed:v8
+          docker tag udagram-api-user thanhnt103/udagram-api-user:v8
+          docker tag udagram-frontend thanhnt103/udagram-frontend:v8
+          docker tag udagram-reverseproxy thanhnt103/udagram-reverseproxy:v6
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker push thanhnt103/udagram-api-feed:v7
-          docker push thanhnt103/udagram-api-user:v7
-          docker push thanhnt103/udagram-frontend:v7
-          docker push thanhnt103/udagram-reverseproxy:v5
+          docker push thanhnt103/udagram-api-feed:v8
+          docker push thanhnt103/udagram-api-user:v8
+          docker push thanhnt103/udagram-frontend:v8
+          docker push thanhnt103/udagram-reverseproxy:v6

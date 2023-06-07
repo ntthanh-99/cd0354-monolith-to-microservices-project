@@ -16,7 +16,7 @@ spec:
         run: reverseproxy
     spec:
       containers:
-        - image: thanhnt103/udagram-reverseproxy:v5
+        - image: thanhnt103/udagram-reverseproxy:v6
           name: reverseproxy
           imagePullPolicy: Always
           resources:

@@ -21,7 +21,7 @@ spec:
         run: backend-user
     spec:
       containers:
-      - image: thanhnt103/udagram-api-user:v7
+      - image: thanhnt103/udagram-api-user:v8
         name: backend-user
         imagePullPolicy: Always
         resources:
