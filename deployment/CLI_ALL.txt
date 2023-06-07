@@ -1,4 +1,9 @@
 #Windows
+#2023-06
+#Setup docker env
+setx DOCKER_USERNAME <your-docker-user>
+setx DOCKER_PASSWORD <your-docker-password>
+
 #Configure AWS_ACCESS_KEY
 aws configure
 
@@ -46,4 +51,64 @@ setx AWS_DEFAULT_REGION <my-default-region>
 	}
 ]
 
-#
+#Create RDB using console
+#Public Access
+#Create DB when RDB creating: Additional configuration -> Database option -> Initial database name
+#After success creating, setting inbond firewall to access from outside AWS
+0.0.0.0/0
+#Test connection
+psql -h <endpoint-of-RDB> -U <your-username> postgres
+
+#Update endpoint-of-RDB to set_evn.sh
+#Setting database to local env
+setx POSTGRES_HOST <endpoint-of-RDB>
+
+#EKS
+#Create EKS Cluster
+eksctl create cluster --name <name-of-cluster> --region=<my-default-region> --nodes-min=2 --nodes-max=3
+##With udacity need using default-profile
+eksctl create cluster --name <name-of-cluster> --region=<my-default-region> --nodes-min=2 --nodes-max=3 --profile default
+
+#Create YAML for deployment
+#Note: In aws-secret.yaml, need copy all three key from user/.aws/credentials
+
+#Create your kubeconfig file with the AWS CLI
+aws eks update-kubeconfig --region <my-default-region> --name <your-cluster-name>
+
+#Apply YAML file
+Using: kubectl apply -f <file-name-yaml>
+kubectl apply -f aws-secret.yaml
+kubectl apply -f env-secret.yaml
+kubectl apply -f env-configmap.yaml
+kubectl apply -f backend-feed-deployment.yaml
+kubectl apply -f backend-user-deployment.yaml
+kubectl apply -f backend-reverseproxy-deployment.yaml
+kubectl apply -f backend-frontend-deployment.yaml
+
+#Public IP
+
+
+
+
+
+-----------------------------
+###Some utility CLI useful
+#Docker build/push with tag name
+docker build . -t <docker-username>/<repository>:<tag-name>
+docker push <docker-username>/<repository>:<tag-name>
+
+#Login docker:
+#Value of DOCKER_USERNAME; DOCKER_PASSWORD get from enviroment variable in PC
+echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+#Get AWS Identifier
+aws sts get-caller-identity
+#With udacity need specifical profile -> default: profile default
+aws sts get-caller-identity --profile <your-profile> 
+
+#Show all profile
+aws configure list
+
+#Update role ARN to kubectl for access EKS
+role-arn can get from #Get AWS Identifier
+aws eks update-kubeconfig --region us-east-1 --name <your-cluster-name> --role-arn <role-arn> --profile --profile default
