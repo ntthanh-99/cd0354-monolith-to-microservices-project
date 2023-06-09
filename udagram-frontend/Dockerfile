@@ -1,5 +1,5 @@
 ### Build
-FROM beevelop/ionic:latest AS ionic
+FROM --platform=linux/amd64 beevelop/ionic:latest AS ionic
 ## Create app directory
 WORKDIR /usr/src/app
 ## Install app dependencies

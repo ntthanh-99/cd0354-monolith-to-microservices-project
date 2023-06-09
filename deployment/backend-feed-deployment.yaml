@@ -20,7 +20,7 @@ spec:
         run: backend-feed
     spec:
       containers:
-      - image: thanhnt103/udagram-api-feed:v8
+      - image: thanhnt103/udagram-api-feed:v9
         name: backend-feed
         imagePullPolicy: Always
         resources:

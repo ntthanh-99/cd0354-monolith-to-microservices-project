@@ -6,10 +6,12 @@ setx DOCKER_PASSWORD <your-docker-password>
 
 #Configure AWS_ACCESS_KEY
 aws configure
+aws configure set aws_session_token <SESSIONTOKENHERE>
 
 #Set local env
 setx AWS_ACCESS_KEY_ID <my-access-key-id>
 setx AWS_SECRET_ACCESS_KEY <my-secret-access-key>
+setx AWS_SESSION_TOKEN 
 setx AWS_DEFAULT_REGION <my-default-region>
 
 #Restart to apply local env
@@ -83,16 +85,65 @@ kubectl apply -f env-configmap.yaml
 kubectl apply -f backend-feed-deployment.yaml
 kubectl apply -f backend-user-deployment.yaml
 kubectl apply -f backend-reverseproxy-deployment.yaml
-kubectl apply -f backend-frontend-deployment.yaml
+kubectl apply -f frontend-deployment.yaml
 
 #Public IP
+#Check Deployment
+kubectl get deployments
 
+#Expost public frontend/reverseproxy
+kubectl expose deployment frontend --type=LoadBalancer --name=publicfrontend
+kubectl expose deployment reverseproxy --type=LoadBalancer --name=publicreverseproxy
+
+#Get Services
+kubectl get services
+kubectl get pods
+
+#Change IP extenal
+Replace frontend: environment.ts & environment.prod.ts:
+#Update localhost -> value of publicreverseproxy
+Replace URL in env-configmap
+#Replace localhost:8100 -> value of publicfrontend
+
+#Build frontend local
+ionic build
+
+#Build Docker with: #Docker build/push with tag name
+docker build . -t <docker-username>/<repository>:<tag-name>
+
+#Push Docker
+docker push <docker-username>/<repository>:<tag-name>
+
+#Set image
+kubectl set image deployment frontend frontend=<docker-username>/<repository>:<tag-name>
+
+#AutoScale
+#Apply from Git
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+#Apply for Backend-user
+kubectl autoscale deployment backend-user --cpu-percent=70 --min=3 --max=5
+
+#Apply for Backend-feed
+kubectl autoscale deployment backend-feed --cpu-percent=70 --min=3 --max=5
+
+#Describe hpa
+kubectl describe hpa
+
+#Show log
+kubectl logs <your-pod-name>
 
 
 
 
 -----------------------------
 ###Some utility CLI useful
+#Ionic build
+ionic build
+
+#Ionic run
+ionic serve
+
 #Docker build/push with tag name
 docker build . -t <docker-username>/<repository>:<tag-name>
 docker push <docker-username>/<repository>:<tag-name>
@@ -112,3 +163,6 @@ aws configure list
 #Update role ARN to kubectl for access EKS
 role-arn can get from #Get AWS Identifier
 aws eks update-kubeconfig --region us-east-1 --name <your-cluster-name> --role-arn <role-arn> --profile --profile default
+
+#Delete Pod
+kubectl delete --all
